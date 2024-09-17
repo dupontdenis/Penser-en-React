@@ -58,28 +58,25 @@ function createTableHeader(headers) {
 }
 
 function createCategoryRow(category) {
-  const trCategory = document.createElement("tr");
-  const tdCategory = document.createElement("td");
-  tdCategory.textContent = category;
-  tdCategory.colSpan = 2; // Span across both columns
-  tdCategory.classList.add("category");
-  trCategory.appendChild(tdCategory);
-  return trCategory;
+  return createElementFromHTML(`
+    <tr>
+      <td colspan="2" class="category">${category}</td>
+    </tr>
+  `);
 }
 
 function createProductRow(product) {
-  const tr = document.createElement("tr");
+  const stockedClass = product.stocked ? "" : "class='stocked'";
+  return createElementFromHTML(`
+    <tr>
+      <td ${stockedClass}>${product.name}</td>
+      <td>${product.price}</td>
+    </tr>
+  `);
+}
 
-  const tdName = document.createElement("td");
-  tdName.textContent = product.name;
-  if (!product.stocked) {
-    tdName.classList.add("stocked");
-  }
-  tr.appendChild(tdName);
-
-  const tdPrice = document.createElement("td");
-  tdPrice.textContent = product.price;
-  tr.appendChild(tdPrice);
-
-  return tr;
+function createElementFromHTML(htmlString) {
+  const div = document.createElement("div");
+  div.innerHTML = htmlString.trim();
+  return div.firstChild;
 }
